@@ -1,0 +1,7 @@
+node_modules/
+lib/
+lib/**/*.map
+.DS_Store
+*.tgz
+pack/
+pnpm-debug.log*

@@ -1,0 +1,58 @@
+{
+  "name": "@jiangdaoli/dsh-memory",
+  "version": "0.1.0",
+  "description": "DSH long-term memory: distil durable facts/decisions/how-tos from each session, remember live user facts, recall relevant memory in new sessions, and maintain the store over time. Host-side, works on web and desktop.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jiangdl0220/dsh-memory.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.d.ts",
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "README_EN.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rm -rf lib && tsc -p tsconfig.json && node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm build && node --test test/*.test.mjs",
+    "prepublishOnly": "pnpm build && node --test test/*.test.mjs"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  },
+  "packageManager": "pnpm@11.7.0"
+}

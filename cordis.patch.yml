@@ -1,0 +1,12 @@
+- insert:
+    - id: dsh-memory
+      name: '@jiangdaoli/dsh-memory'
+      config:
+        minTurnsBetweenSummary: 3
+        stabilizeMs: 3000
+        maxSpanBytes: 65536
+        summarizationMaxTokens: 4096
+        summaryReasoningEffort: 'default'
+        summaryProvider: ''
+        summaryModel: ''
+        maxMessagesPerSummary: 10
