@@ -1,7 +1,7 @@
 {
   "name": "@jiangdaoli/dsh-memory",
   "version": "0.1.0",
-  "description": "DSH long-term memory: distil durable facts/decisions/how-tos from each session, remember live user facts, recall relevant memory in new sessions, and maintain the store over time. Host-side, works on web and desktop.",
+  "description": "DSH long-term memory: distil durable facts/decisions/how-tos from each session, remember live user facts, recall relevant memory in new sessions, maintain the store, and configure it from Settings. Works on web and desktop.",
   "type": "module",
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
@@ -26,10 +30,19 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
     }
   },
   "files": [
     "lib/index.js",
+    "lib/client.js",
     "lib/types/**/*.d.ts",
     "src",
     "cordis.patch.yml",
@@ -46,13 +59,28 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1"
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-locale": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-typert-protocol": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-typert-registry": "^0.1.0-rc.7"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-locale": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-typert-protocol": "^0.1.0-rc.7",
+    "@deepseek-ai/dsh-typert-registry": "^0.1.0-rc.7",
     "@types/node": "^24.0.0",
+    "@types/react": "~18.3.1",
     "esbuild": "^0.25.0",
-    "typescript": "^5.6.0"
+    "react": "^18.2.0",
+    "typescript": "^5.6.0",
+    "zod": "^4.4.3"
   },
   "packageManager": "pnpm@11.7.0"
 }

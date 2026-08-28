@@ -124,6 +124,11 @@ export class MemoryStore {
     return this.readText('profile.md')
   }
 
+  /** Replace the whole profile markdown (used by the editor). */
+  async writeProfile(content: string): Promise<void> {
+    await this.writeText('profile.md', content)
+  }
+
   /** Append one fact line under a `## <section>` heading, creating it if needed. */
   async writeProfileFact(section: string, fact: string): Promise<void> {
     const sectionName = section || '偏好'
@@ -158,5 +163,24 @@ export class MemoryStore {
       }
     }
     return items
+  }
+
+  // ---- settings (settings.json, frontend-editable) ----
+  async readSettings(): Promise<Partial<import('./types.ts').MemorySettings>> {
+    try {
+      const raw = await this.readText('settings.json')
+      return raw ? JSON.parse(raw) as Partial<import('./types.ts').MemorySettings> : {}
+    } catch {
+      return {}
+    }
+  }
+
+  async writeSettings(s: object): Promise<void> {
+    await this.writeText('settings.json', JSON.stringify(s, null, 2))
+  }
+
+  // ---- topic read ----
+  async readTopic(topic: string): Promise<string> {
+    return this.readText(`topics/${sanitizeTopic(topic)}.md`)
   }
 }

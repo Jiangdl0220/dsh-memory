@@ -37,3 +37,16 @@ export interface MemoryConfig {
   /** Max user/assistant messages read into one summary window. */
   maxMessagesPerSummary: number
 }
+
+/** User-facing settings persisted by the frontend page (settings.json). */
+export interface MemorySettings {
+  toneStyle: string
+  customPrompt: string
+  summaryReasoningEffort: MemoryConfig['summaryReasoningEffort']
+}
+
+/** One settings-section tab's data bundle (shared wire types). */
+export interface InjectionPreview {
+  profile: string
+  items: MemoryItem[]
+}

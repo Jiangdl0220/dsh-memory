@@ -1,6 +1,6 @@
 # @jiangdaoli/dsh-memory
 
-DeepSeek Harness（DSH）长期记忆插件：从每次会话里**自动沉淀**有长期价值的事实/决策/做法，会话中**实时记住**用户画像，新会话**自动注入与按需检索**相关记忆，并**维护记忆库**不膨胀。**Host 侧**插件，web 与桌面端一致运行。
+DeepSeek Harness（DSH）长期记忆插件：从每次会话里**自动沉淀**有长期价值的事实/决策/做法，会话中**实时记住**用户画像，新会话**自动注入与按需检索**相关记忆，并**维护记忆库**不膨胀。**Host + Client**，web 与桌面端一致运行，Settings 里提供配置页。
 
 ## 功能
 
@@ -10,6 +10,16 @@ DeepSeek Harness（DSH）长期记忆插件：从每次会话里**自动沉淀**
 | M2 | `remember(fact, category)` 写用户画像 `profile.md` | agent 在对话中主动调用 |
 | M3 | `memory_search(keywords)` + 启动注入画像/相关记忆 | 会话中按需 / 每步 prompt 组装 |
 | M4 | `/memory distill` 蒸馏过期日志 | 手动命令 |
+| M5/M6 | **前端设置页**（Settings → 记忆与个性化） | 4 个 tab：规则/画像/记忆库/蒸馏 |
+
+## 前端设置页（M5/M6）
+
+Settings 新增「记忆与个性化」区块，4 个 tab：
+
+- **自定义指令**：语气风格、自定义指令、**摘要推理强度（default/off/high 等）**，保存后注入每次会话。
+- **长期记忆文件**：可视化编辑 `profile.md`（分节增删改、过期项标 `[archived]`）。
+- **记忆库**：浏览 `topics/`，按主题查看，全文搜索，**注入预览**（看到最近注入了哪些片段）。
+- **蒸馏**：一键蒸馏 30 天前的 journal 进 `topics/`。
 
 ## 安装
 
@@ -21,7 +31,7 @@ DeepSeek Harness（DSH）长期记忆插件：从每次会话里**自动沉淀**
       name: '@jiangdaoli/dsh-memory'
 ```
 
-或作为 npm 包依赖并接入 bundle。安装后重启 DSH。
+或作为 npm 包依赖并接入 bundle。安装后重启 DSH。web 与桌面端共用同一 Host + 同一 `~/.dsh/memory/`。
 
 ## 记忆库结构（`~/.dsh/memory/`）
 

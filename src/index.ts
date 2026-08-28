@@ -6,6 +6,8 @@ import { MemorySummaryEngine } from './hook-summary.ts'
 import { registerRememberTool } from './tool-remember.ts'
 import { registerSearchTool, registerMemoryInjection } from './tool-search.ts'
 import { registerMemoryCommand } from './distill.ts'
+import { MEMORY_MANIFEST } from './typert.ts'
+import { MemoryRuntime } from './runtime.ts'
 
 // Re-export pure helpers so tests (and consumers) can import them from the bundle.
 export { resolveConfig, dshHome } from './config.ts'
@@ -26,6 +28,7 @@ export const inject: string[] = [
   'llm',
   'agentDefaultModel',
   'timer',
+  'typert',
 ]
 
 /**
@@ -44,4 +47,11 @@ export function apply(ctx: Context, config: Partial<MemoryConfig> = {}): void {
   registerSearchTool(ctx, cfg, store)
   registerMemoryInjection(ctx, cfg, store)
   registerMemoryCommand(ctx, cfg, store, engine)
+  // Host Remote for the settings page (strict Typert manifest).
+  new MemoryRuntime(ctx, cfg, store)
+  ctx.effect(() => {
+    const typert = ctx.get('typert') as { register(m: unknown): () => Promise<void> } | undefined
+    const dispose = typert?.register(MEMORY_MANIFEST)
+    return () => { void dispose?.() }
+  }, 'dsh-memory: typert manifest')
 }
