@@ -36,11 +36,13 @@ test('host plugin apply() mounts without throwing and registers everything', () 
   assert.ok(Array.isArray(listeners['session/disposed']) && listeners['session/disposed'].length > 0, 'listens session/disposed')
 })
 
-test('every registered tool output.schema passes the DSH schema validator', () => {
+test('every registered tool has object-rooted parameters and a valid output schema', () => {
   const { ctx, toolDefs } = fakeCtx()
   apply(ctx, { memoryHome: '/tmp/dsh-memory-smoke' })
   assert.ok(toolDefs.length >= 2, 'expected at least two tools')
   for (const def of toolDefs) {
+    assert.equal(def.parameters?.type, 'object', `tool ${def.name} parameters must be object-rooted (model-facing function schema)`)
+    assert.ok(def.parameters?.properties && typeof def.parameters.properties === 'object', `tool ${def.name} parameters.properties required`)
     assert.doesNotThrow(
       () => assertSupportedJsonSchema(def.output.schema),
       `tool ${def.name} output.schema is invalid`,
