@@ -30,7 +30,8 @@ export function registerRememberTool(ctx: Context, _cfg: MemoryConfig, store: Me
     output: {
       schema: {
         type: 'object', additionalProperties: false,
-        properties: { ok: { type: 'boolean', required: true } },
+        properties: { ok: { type: 'boolean' } },
+        required: ['ok'],
       },
       render: (_args: any, value: any) => [{ type: 'text', text: `已记忆：${value.ok ? '已写入 profile.md' : '未写入'}` }],
     },

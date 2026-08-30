@@ -13,12 +13,13 @@ export function registerSearchTool(ctx: Context, _cfg: MemoryConfig, store: Memo
     description: '在本地长期记忆库中按关键词检索条目（事实/决策/做法），供会话中按需回忆。',
     parameters: {
       keywords: { type: 'string', required: true, description: '空格分隔的关键词。' },
-      limit: { type: 'integer', required: false, description: '最多返回条数（默认 5，1-20）。' },
+      limit: { type: 'integer', description: '最多返回条数（默认 5，1-20）。' },
     },
     output: {
       schema: {
         type: 'object', additionalProperties: false,
-        properties: { items: { type: 'array', required: true, items: { type: 'object' } } },
+        properties: { items: { type: 'array', items: { type: 'object' } } },
+        required: ['items'],
       },
       render: (_args: any, value: any) => {
         const items = (value.items ?? []) as MemoryItem[]
