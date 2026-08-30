@@ -18,16 +18,12 @@ export { parseJournalLines, distillOldJournals } from './distill.ts'
 /** Cordis plugin name (the Loader entry and client bundle id). */
 export const name = '@jiangdaoli/dsh-memory'
 
-/** Services required before load. */
+/** Services required before load (hard deps). sessionQuery/llm/agentDefaultModel/timer are read via ctx.get with guards so a profile without them still mounts. */
 export const inject: string[] = [
   'tools',
   'commands',
   'systemPrompt',
   'fs',
-  'sessionQuery',
-  'llm',
-  'agentDefaultModel',
-  'timer',
   'typert',
 ]
 
