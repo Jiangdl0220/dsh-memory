@@ -335,22 +335,16 @@ const cssText = `
   border-color: var(--mem-border-strong);
   font-weight: 600;
 }
-.dsh_mem_preview_surface {
+.dsh_mem_content {
   flex: 1;
+  min-width: 0;
   min-height: 240px;
   max-height: 320px;
   overflow: auto;
-  margin: 0;
-  font-family: var(--mem-mono);
-  font-size: 12.5px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: var(--dsw-alias-label-primary);
-  background: var(--dsw-alias-markdown-code-block);
+  background: var(--mem-surface);
   border: 1px solid var(--mem-border-strong);
   border-radius: 8px;
-  padding: 12px 14px;
+  padding: 14px 16px;
 }
 
 /* ---------- Injection preview ---------- */
@@ -366,12 +360,6 @@ const cssText = `
 }
 .dsh_mem_preview_head { font-size: 12px; font-weight: 600; color: var(--dsw-alias-label-secondary); }
 .dsh_mem_preview_body {
-  font-family: var(--mem-mono);
-  font-size: 12.5px;
-  line-height: 1.7;
-  color: var(--dsw-alias-label-primary);
-  white-space: pre-wrap;
-  word-break: break-word;
   max-height: 220px;
   overflow: auto;
 }

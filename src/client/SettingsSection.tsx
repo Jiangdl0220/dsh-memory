@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ReactElement } from 'react'
 import type { PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
+import { MarkdownText } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { MemoryItem, MemorySettings } from '../contract.ts'
 import { getRemote, getTranslate, subscribe } from './state.ts'
 import type { Translate } from './locales.ts'
@@ -187,7 +188,7 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
           <div className="dsh_mem_split_head">{active ? active : t('browse.topic')}</div>
           {loadError
             ? <div className="dsh_mem_error" style={{ padding: '10px 12px' }}>{t('error', { msg: loadError })}</div>
-            : <pre className="dsh_mem_preview_surface">{active ? body : ''}</pre>}
+            : <div className="dsh_mem_content"><MarkdownText text={active ? body : ''} /></div>}
         </div>
       </div>
 
@@ -195,10 +196,12 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
         <div className="dsh_mem_preview_card">
           <div className="dsh_mem_preview_head">{t('browse.preview')}</div>
           <div className="dsh_mem_preview_body">
-            {preview.profile ? preview.profile + '\n' : ''}
-            {preview.items.length === 0 && preview.profile === ''
-              ? t('browse.empty')
-              : preview.items.map((it) => `- ${kindLabel(it.kind, t)}（${it.topic}）：${it.text}`).join('\n')}
+            <MarkdownText text={
+              (preview.profile ? preview.profile + '\n' : '') +
+              (preview.items.length === 0 && preview.profile === ''
+                ? t('browse.empty')
+                : preview.items.map((it) => `- ${kindLabel(it.kind, t)}（${it.topic}）：${it.text}`).join('\n'))
+            } />
           </div>
         </div>
       )}
