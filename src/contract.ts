@@ -44,7 +44,7 @@ function method(id: string, method: string, parameters: InvocationDescriptor['pa
 
 export const MEMORY_INVOCATIONS: readonly InvocationDescriptor[] = [
   method('get-settings', 'getSettings', [], 'GetSettingsResult', getSettingsResultSchema),
-  method('set-settings', 'setSettings', [{ name: 'settings', wire: 'settings', source: 'json', codec: { mode: 'strict', typeSymbol: 'dsh-memory#MemorySettings', schema: settingsSchema } }], 'Ok', okResultSchema),
+  method('set-settings', 'setSettings', [{ name: 'settings', wire: 'settings', source: 'json', codec: { mode: 'strict', typeSymbol: 'dsh-memory#SetSettingsRequest', schema: setSettingsRequestSchema } }], 'Ok', okResultSchema),
   method('read-profile', 'readProfile', [], 'Profile', profileResultSchema),
   method('write-profile', 'writeProfile', [{ name: 'content', wire: 'content', source: 'json', codec: { mode: 'strict', typeSymbol: 'dsh-memory#WriteProfileRequest', schema: writeProfileRequestSchema } }], 'Ok', okResultSchema),
   method('write-profile-fact', 'writeProfileFact', [{ name: 'section', wire: 'section', source: 'json', codec: { mode: 'strict', typeSymbol: 'dsh-memory#WriteProfileFactRequest', schema: writeProfileFactRequestSchema } }], 'Ok', okResultSchema),
