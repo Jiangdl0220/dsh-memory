@@ -35,7 +35,7 @@ function TabRules({ t }: { t: Translate }): ReactElement {
     })
   }
   return (
-    <div className="dsh_mem_tab">
+    <div className="dsh_mem_pane">
       <p className="dsh_mem_intro">{t('rules.intro')}</p>
       <div className="dsh_mem_card">
         <div className="dsh_mem_field">
@@ -91,7 +91,7 @@ function TabMemory({ t }: { t: Translate }): ReactElement {
     })
   }
   return (
-    <div className="dsh_mem_tab">
+    <div className="dsh_mem_pane">
       <p className="dsh_mem_intro">{t('memory.intro')}</p>
       <div className="dsh_mem_editor">
         <div className="dsh_mem_editor_head">
@@ -142,7 +142,7 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
   }
 
   return (
-    <div className="dsh_mem_tab">
+    <div className="dsh_mem_pane">
       <p className="dsh_mem_intro">{t('browse.intro')}</p>
       <div className="dsh_mem_search">
         <input className="dsh_mem_input" value={query} placeholder={t('browse.search')}
@@ -213,7 +213,7 @@ function TabDistill({ t }: { t: Translate }): ReactElement {
       : t('distill.moved', { moved: String(result.moved), files: String(result.files.length) })
     : ''
   return (
-    <div className="dsh_mem_tab">
+    <div className="dsh_mem_pane">
       <p className="dsh_mem_intro">{t('distill.intro')}</p>
       <div className="dsh_mem_card dsh_mem_card_center">
         <button className="dsh_mem_btn dsh_mem_btn_primary" disabled={busy} onClick={run}>

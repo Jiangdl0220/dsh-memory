@@ -13,7 +13,7 @@ export const STYLE_ID = 'dsh-memory-style'
 
 const cssText = `
 .dsh_mem_root {
-  --mem-accent: var(--dsw-alias-brand-primary);
+  --mem-accent: var(--dsw-alias-button-info-fill, var(--dsw-static-deepseek-500, #4176e6));
   --mem-surface: var(--dsw-alias-bg-layer-1);
   --mem-surface-raise: var(--dsw-alias-bg-layer-2);
   --mem-border: var(--dsw-alias-border-l2);
@@ -28,7 +28,7 @@ const cssText = `
 
 /* ---------- Top-level ---------- */
 .dsh_mem_root { max-width: 780px; }
-.dsh_mem_tab { display: flex; flex-direction: column; gap: 14px; }
+.dsh_mem_pane { display: flex; flex-direction: column; gap: 14px; }
 
 .dsh_mem_intro {
   font-size: 13px;
@@ -59,15 +59,25 @@ const cssText = `
   font-size: 13px;
   font-weight: 560;
   line-height: 20px;
+  outline: none;
   transition: background .16s ease, color .16s ease, box-shadow .16s ease;
 }
 .dsh_mem_tab:hover { color: var(--dsw-alias-label-primary); background: var(--dsw-alias-interactive-bg-hover); }
+.dsh_mem_tab:focus-visible {
+  outline: 2px solid var(--mem-accent);
+  outline-offset: 2px;
+}
 .dsh_mem_tab[data-active="true"] {
   background: var(--dsw-alias-bg-layer-2);
   color: var(--dsw-alias-label-primary);
   font-weight: 620;
-  box-shadow: inset 0 -2px 0 var(--mem-accent), 0 1px 2px rgba(0,0,0,.18);
+  box-shadow: inset 0 -2px 0 var(--mem-accent), 0 1px 2px rgba(0,0,0,.22);
 }
+/* Kill the native focus outline on any interaction (mouse click) but keep a
+   ring for keyboard users via :focus-visible. */
+.dsh_mem_root .dsh_mem_tab:focus,
+.dsh_mem_root .dsh_mem_btn:focus,
+.dsh_mem_root .dsh_mem_topic:focus { outline: none; }
 
 /* ---------- Card ---------- */
 .dsh_mem_card {
@@ -150,10 +160,15 @@ const cssText = `
   height: 36px;
   border-radius: 18px;
   white-space: nowrap;
+  outline: none;
   transition: background .15s ease, border-color .15s ease, opacity .15s ease;
 }
 .dsh_mem_btn:hover:not(:disabled) { background: var(--dsw-alias-interactive-bg-hover); }
 .dsh_mem_btn:active:not(:disabled) { background: var(--dsw-alias-interactive-bg-active); }
+.dsh_mem_btn:focus-visible {
+  outline: 2px solid var(--mem-accent);
+  outline-offset: 2px;
+}
 .dsh_mem_btn:disabled { cursor: not-allowed; opacity: .45; }
 .dsh_mem_btn_primary {
   background: var(--dsw-alias-button-primary-fill);
@@ -306,9 +321,14 @@ const cssText = `
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
+  outline: none;
   transition: background .14s ease, color .14s ease, border-color .14s ease;
 }
 .dsh_mem_topic:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.dsh_mem_topic:focus-visible {
+  outline: 2px solid var(--mem-accent);
+  outline-offset: 2px;
+}
 .dsh_mem_topic[data-active="true"] {
   background: var(--dsw-alias-interactive-bg-active);
   color: var(--dsw-alias-label-primary);
