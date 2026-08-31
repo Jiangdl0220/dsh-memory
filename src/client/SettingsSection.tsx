@@ -197,15 +197,31 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
 
       {preview && (
         <div className="dsh_mem_preview_card">
-          <div className="dsh_mem_preview_head">{t('browse.preview')}</div>
-          <div className="dsh_mem_preview_body">
-            <MarkdownText text={
-              (preview.profile ? preview.profile + '\n' : '') +
-              (preview.items.length === 0 && preview.profile === ''
-                ? t('browse.empty')
-                : preview.items.map((it) => `- ${kindLabel(it.kind, t)}（${it.topic}）：${it.text}`).join('\n'))
-            } />
+          <div className="dsh_mem_preview_head">
+            <span>{t('browse.preview')}</span>
+            <span className="dsh_mem_preview_hint">{t('browse.previewHint')}</span>
           </div>
+          {preview.profile.trim() ? (
+            <div className="dsh_mem_preview_profile">
+              <div className="dsh_mem_preview_label">profile.md</div>
+              <div className="dsh_mem_preview_profile_body"><MarkdownText text={preview.profile} /></div>
+            </div>
+          ) : null}
+          {preview.items.length === 0
+            ? <p className="dsh_mem_muted">{t('browse.empty')}</p>
+            : (
+              <div className="dsh_mem_list dsh_mem_preview_items">
+                {preview.items.map((it, i) => (
+                  <div key={i} className="dsh_mem_item">
+                    <span className={`dsh_mem_badge dsh_mem_badge_${it.kind}`}>{kindLabel(it.kind, t)}</span>
+                    <div className="dsh_mem_item_body">
+                      <div className="dsh_mem_item_topic">{it.topic}</div>
+                      <div className="dsh_mem_item_text">{it.text}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
         </div>
       )}
     </div>
