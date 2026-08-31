@@ -123,6 +123,7 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
   const [active, setActive] = useState<string | null>(null)
   const [body, setBody] = useState('')
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [diag, setDiag] = useState('')
   const [query, setQuery] = useState('')
   const [hits, setHits] = useState<MemoryItem[]>([])
   const [preview, setPreview] = useState<{ profile: string; items: MemoryItem[] } | null>(null)
@@ -138,9 +139,16 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
     setActive(topic)
     setLoadError(null)
     setBody('')
+    setDiag('')
     remote?.readTopic(topic).then((r) => {
-      if (r.ok) setBody(r.value.content)
-      else if (r.error) setLoadError(r.error.message)
+      const ok = r.ok
+      const content = ok ? r.value.content : ''
+      const error = !ok ? r.error.message : ''
+      // Diagnostic: show exactly what readTopic returned when the pane would
+      // otherwise be blank, so a transient/edge case is visible, not silent.
+      setDiag(`ok=${String(ok)} len=${String(content.length)} err=${error}`)
+      if (ok) setBody(content)
+      else if (!ok) setLoadError(error)
     })
   }
   const doSearch = (): void => {
@@ -188,6 +196,7 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
           {loadError
             ? <div className="dsh_mem_error" style={{ padding: '10px 12px' }}>{t('error', { msg: loadError })}</div>
             : <pre className="dsh_mem_preview_surface">{active ? body : ''}</pre>}
+          {!loadError && diag && !body && <div className="dsh_mem_muted" style={{ fontSize: 11 }}>{diag}</div>}
         </div>
       </div>
 
