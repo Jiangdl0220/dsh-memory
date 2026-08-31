@@ -27,13 +27,14 @@ function TabRules({ t }: { t: Translate }): ReactElement {
   const [settings, setSettings] = useState<MemorySettings>({ toneStyle: '', customPrompt: '', summaryReasoningEffort: 'default' })
   const [state, setState] = useState<Loader<{ saved: boolean }>>(empty())
   useRemoteTick()
-  useEffect(() => { remote?.getSettings().then((r) => { if (r.ok) setSettings(r.value.settings) }) }, [remote])
+  useEffect(() => { remote?.getSettings().then((r) => { if (r.ok) setSettings(r.value.settings) }).catch(() => void 0) }, [remote])
   const save = (): void => {
+    if (!remote) { setState({ value: null, error: 'remote unavailable', loading: false }); return }
     setState({ value: null, error: null, loading: true })
-    remote?.setSettings({ settings }).then((r) => {
+    remote.setSettings({ settings }).then((r) => {
       if (r.ok) setState({ value: { saved: true }, error: null, loading: false })
       else setState({ value: null, error: r.error.message, loading: false })
-    })
+    }).catch((e) => setState({ value: null, error: String((e as Error)?.message ?? e), loading: false }))
   }
   return (
     <div className="dsh_mem_pane">
@@ -85,11 +86,12 @@ function TabMemory({ t }: { t: Translate }): ReactElement {
     [content],
   )
   const save = (): void => {
+    if (!remote) { setState({ value: null, error: 'remote unavailable', loading: false }); return }
     setState({ value: null, error: null, loading: true })
-    remote?.writeProfile({ content }).then((r) => {
+    remote.writeProfile({ content }).then((r) => {
       if (r.ok) setState({ value: { saved: true }, error: null, loading: false })
       else setState({ value: null, error: r.error.message, loading: false })
-    })
+    }).catch((e) => setState({ value: null, error: String((e as Error)?.message ?? e), loading: false }))
   }
   return (
     <div className="dsh_mem_pane">
@@ -130,8 +132,8 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
   useRemoteTick()
 
   const refresh = (): void => {
-    remote?.listTopics().then((r) => { if (r.ok) setTopics(r.value.topics) })
-    remote?.getInjectionPreview().then((r) => { if (r.ok) setPreview(r.value) })
+    remote?.listTopics().then((r) => { if (r.ok) setTopics(r.value.topics) }).catch(() => void 0)
+    remote?.getInjectionPreview().then((r) => { if (r.ok) setPreview(r.value) }).catch(() => void 0)
   }
   useEffect(() => { refresh() }, [remote])
 
@@ -142,10 +144,11 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
     remote?.readTopic({ topic }).then((r) => {
       if (r.ok) setBody(r.value.content)
       else setLoadError(r.error.message)
-    })
+    }).catch((e) => setLoadError(String((e as Error)?.message ?? e)))
   }
   const doSearch = (): void => {
     remote?.search({ keywords: query }).then((r) => { if (r.ok) setHits(r.value.items); else setHits([]) })
+      .catch((e) => setHits([]))
   }
 
   return (
@@ -215,8 +218,10 @@ function TabDistill({ t }: { t: Translate }): ReactElement {
   const [busy, setBusy] = useState(false)
   useRemoteTick()
   const run = (): void => {
+    if (!remote) { setBusy(false); return }
     setBusy(true)
-    remote?.distill().then((r) => { setBusy(false); if (r.ok) setResult(r.value) })
+    remote.distill().then((r) => { setBusy(false); if (r.ok) setResult(r.value) })
+      .catch((e) => { setBusy(false); void e })
   }
   const summary = result
     ? result.moved === 0
