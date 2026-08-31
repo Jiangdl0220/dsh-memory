@@ -50,8 +50,8 @@ export class MemoryRuntime extends TypertRemoteService {
   }
 
   @Remote
-  async setSettings(settings: MemorySettings): Promise<{ ok: true }> {
-    await this.store.writeSettings(settings)
+  async setSettings(request: { settings: MemorySettings }): Promise<{ ok: true }> {
+    await this.store.writeSettings(request.settings)
     return { ok: true }
   }
 
@@ -61,14 +61,14 @@ export class MemoryRuntime extends TypertRemoteService {
   }
 
   @Remote
-  async writeProfile(content: string): Promise<{ ok: true }> {
-    await this.store.writeProfile(content)
+  async writeProfile(request: { content: string }): Promise<{ ok: true }> {
+    await this.store.writeProfile(request.content)
     return { ok: true }
   }
 
   @Remote
-  async writeProfileFact(section: string, fact: string): Promise<{ ok: true }> {
-    await this.store.writeProfileFact(section || '偏好', fact)
+  async writeProfileFact(request: { section: string; fact: string }): Promise<{ ok: true }> {
+    await this.store.writeProfileFact(request.section || '偏好', request.fact)
     return { ok: true }
   }
 
@@ -78,13 +78,13 @@ export class MemoryRuntime extends TypertRemoteService {
   }
 
   @Remote
-  async readTopic(topic: string): Promise<{ content: string }> {
-    return { content: await this.store.readTopic(topic) }
+  async readTopic(request: { topic: string }): Promise<{ content: string }> {
+    return { content: await this.store.readTopic(request.topic) }
   }
 
   @Remote
-  async search(keywords: string): Promise<{ items: MemoryItem[] }> {
-    return { items: searchItems(await this.store.collectItems(), keywords) }
+  async search(request: { keywords: string }): Promise<{ items: MemoryItem[] }> {
+    return { items: searchItems(await this.store.collectItems(), request.keywords) }
   }
 
   @Remote
