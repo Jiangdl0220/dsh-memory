@@ -218,8 +218,8 @@ const cssText = `
   font-size: 13px;
   line-height: 1.7;
   tab-size: 2;
-  white-space: pre;
-  overflow-wrap: normal;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
   overflow-x: auto;
   background: var(--dsw-alias-markdown-code-block);
   border: 1px solid var(--mem-border-strong);
