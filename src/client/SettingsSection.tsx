@@ -29,7 +29,7 @@ function TabRules({ t }: { t: Translate }): ReactElement {
   useEffect(() => { remote?.getSettings().then((r) => { if (r.ok) setSettings(r.value.settings) }) }, [remote])
   const save = (): void => {
     setState({ value: null, error: null, loading: true })
-    remote?.setSettings(settings).then((r) => {
+    remote?.setSettings({ settings }).then((r) => {
       if (r.ok) setState({ value: { saved: true }, error: null, loading: false })
       else setState({ value: null, error: r.error.message, loading: false })
     })
@@ -85,7 +85,7 @@ function TabMemory({ t }: { t: Translate }): ReactElement {
   )
   const save = (): void => {
     setState({ value: null, error: null, loading: true })
-    remote?.writeProfile(content).then((r) => {
+    remote?.writeProfile({ content }).then((r) => {
       if (r.ok) setState({ value: { saved: true }, error: null, loading: false })
       else setState({ value: null, error: r.error.message, loading: false })
     })
@@ -123,7 +123,6 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
   const [active, setActive] = useState<string | null>(null)
   const [body, setBody] = useState('')
   const [loadError, setLoadError] = useState<string | null>(null)
-  const [diag, setDiag] = useState('')
   const [query, setQuery] = useState('')
   const [hits, setHits] = useState<MemoryItem[]>([])
   const [preview, setPreview] = useState<{ profile: string; items: MemoryItem[] } | null>(null)
@@ -139,20 +138,13 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
     setActive(topic)
     setLoadError(null)
     setBody('')
-    setDiag('')
-    remote?.readTopic(topic).then((r) => {
-      const ok = r.ok
-      const content = ok ? r.value.content : ''
-      const error = !ok ? r.error.message : ''
-      // Diagnostic: show exactly what readTopic returned when the pane would
-      // otherwise be blank, so a transient/edge case is visible, not silent.
-      setDiag(`ok=${String(ok)} len=${String(content.length)} err=${error}`)
-      if (ok) setBody(content)
-      else if (!ok) setLoadError(error)
+    remote?.readTopic({ topic }).then((r) => {
+      if (r.ok) setBody(r.value.content)
+      else setLoadError(r.error.message)
     })
   }
   const doSearch = (): void => {
-    remote?.search(query).then((r) => { if (r.ok) setHits(r.value.items); else setHits([]) })
+    remote?.search({ keywords: query }).then((r) => { if (r.ok) setHits(r.value.items); else setHits([]) })
   }
 
   return (
@@ -196,7 +188,6 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
           {loadError
             ? <div className="dsh_mem_error" style={{ padding: '10px 12px' }}>{t('error', { msg: loadError })}</div>
             : <pre className="dsh_mem_preview_surface">{active ? body : ''}</pre>}
-          {!loadError && diag && !body && <div className="dsh_mem_muted" style={{ fontSize: 11 }}>{diag}</div>}
         </div>
       </div>
 
