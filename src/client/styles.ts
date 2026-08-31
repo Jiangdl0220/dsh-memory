@@ -346,7 +346,7 @@ const cssText = `
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
-  color: var(--dsw-alias-label-secondary);
+  color: var(--dsw-alias-label-primary);
   background: var(--dsw-alias-markdown-code-block);
   border: 1px solid var(--mem-border-strong);
   border-radius: 8px;
@@ -369,7 +369,7 @@ const cssText = `
   font-family: var(--mem-mono);
   font-size: 12.5px;
   line-height: 1.7;
-  color: var(--dsw-alias-label-dimmed);
+  color: var(--dsw-alias-label-primary);
   white-space: pre-wrap;
   word-break: break-word;
   max-height: 220px;
@@ -381,7 +381,7 @@ const cssText = `
   font-family: var(--mem-mono);
   font-size: 12.5px;
   line-height: 1.7;
-  color: var(--dsw-alias-label-secondary);
+  color: var(--dsw-alias-label-primary);
   background: var(--dsw-alias-markdown-code-block);
   border: 1px solid var(--mem-border);
   border-radius: 8px;

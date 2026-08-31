@@ -122,6 +122,7 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
   const [topics, setTopics] = useState<string[]>([])
   const [active, setActive] = useState<string | null>(null)
   const [body, setBody] = useState('')
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [hits, setHits] = useState<MemoryItem[]>([])
   const [preview, setPreview] = useState<{ profile: string; items: MemoryItem[] } | null>(null)
@@ -135,7 +136,12 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
 
   const open = (topic: string): void => {
     setActive(topic)
-    remote?.readTopic(topic).then((r) => { if (r.ok) setBody(r.value.content) })
+    setLoadError(null)
+    setBody('')
+    remote?.readTopic(topic).then((r) => {
+      if (r.ok) setBody(r.value.content)
+      else if (r.error) setLoadError(r.error.message)
+    })
   }
   const doSearch = (): void => {
     remote?.search(query).then((r) => { if (r.ok) setHits(r.value.items); else setHits([]) })
@@ -179,7 +185,9 @@ function TabBrowse({ t }: { t: Translate }): ReactElement {
         </div>
         <div className="dsh_mem_split_right">
           <div className="dsh_mem_split_head">{active ? active : t('browse.topic')}</div>
-          <pre className="dsh_mem_preview_surface">{active ? body : ''}</pre>
+          {loadError
+            ? <div className="dsh_mem_error" style={{ padding: '10px 12px' }}>{t('error', { msg: loadError })}</div>
+            : <pre className="dsh_mem_preview_surface">{active ? body : ''}</pre>}
         </div>
       </div>
 
