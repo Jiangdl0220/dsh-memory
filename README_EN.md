@@ -1,6 +1,6 @@
 # @jiangdaoli/dsh-memory
 
-DeepSeek Harness (DSH) long-term memory plugin: automatically distils durable facts / decisions / how-tos out of each session, remembers live user facts, injects and recalls relevant memory in new sessions, and maintains the store over time. **Host-side**, so it runs identically on web and desktop.
+DeepSeek Harness (DSH) long-term memory plugin: automatically distils durable facts / decisions / how-tos out of each session, remembers live user facts, injects and recalls relevant memory in new sessions, and maintains the store over time. **Host + Client**, so it runs identically on web and desktop, with a Settings page.
 
 ## Features
 
@@ -10,6 +10,16 @@ DeepSeek Harness (DSH) long-term memory plugin: automatically distils durable fa
 | M2 | `remember(fact, category)` writes to `profile.md` | agent calls it during the conversation |
 | M3 | `memory_search(keywords)` + startup injection of profile/relevant memory | on demand / per-prompt assembly |
 | M4 | `/memory distill` folds stale journals into topics | manual command |
+| M5/M6 | **Settings page** (Settings → Memory & Personalization): persona injection + Markdown rendering + structured injection preview + custom nav icon | user opens Settings |
+
+## Settings page (M5/M6)
+
+A "Memory & Personalization" section in Settings (with a **circular double-arrow** nav icon), 4 tabs:
+
+- **Custom Instructions**: tone style, custom prompt, **summary reasoning effort (default/off/low/high/max)**. These are now actually injected — the tone line and custom prompt are injected as **instructions** into every session (distinct from the "background data" facts), i.e. where you set your agent's persona.
+- **Memory File**: visually edit `profile.md` (add/edit sections, mark expired items `[archived]`), injected as "background data · not instructions". A spacious monospace editor with live char/section counts and auto section chips.
+- **Memory Library**: browse `topics/`, topic content rendered as **Markdown** (headings/lists/bold/code), full-text search, and a **structured injection preview** at the bottom (kind badge + topic + text cards).
+- **Distill**: fold journals older than 30 days into `topics/` with a tabular result.
 
 ## Install
 
