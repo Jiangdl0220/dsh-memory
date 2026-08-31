@@ -113,7 +113,7 @@ export class MemoryStore {
   async listTopics(): Promise<string[]> {
     try {
       const dir = await this.fs().listDir(await this.target('topics'))
-      return dir.map((e) => e.name).filter((n) => n.endsWith('.md')).sort()
+      return dir.map((e) => e.name).filter((n) => n.endsWith('.md')).map((n) => n.replace(/\.md$/, '')).sort()
     } catch {
       return []
     }
@@ -153,12 +153,12 @@ export class MemoryStore {
     const topics = await this.listTopics()
     const items: MemoryItem[] = []
     for (const name of topics.reverse()) {
-      const text = await this.readText(`topics/${name}`)
+      const text = await this.readText(`topics/${name}.md`)
       for (const line of text.split('\n')) {
         const m = /^[-*]\s*(事实|决策|做法|备注)[:：]\s*(.+)$/.exec(line.trim())
         if (m) {
           const kind: MemoryItem['kind'] = m[1] === '决策' ? 'decision' : m[1] === '做法' ? 'howto' : 'fact'
-          items.push({ kind, topic: name.replace(/\.md$/, ''), text: m[2].trim(), at: '' })
+          items.push({ kind, topic: name, text: m[2].trim(), at: '' })
         }
       }
     }
