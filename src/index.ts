@@ -5,6 +5,7 @@ import { MemoryStore } from './store.ts'
 import { MemorySummaryEngine } from './hook-summary.ts'
 import { registerRememberTool } from './tool-remember.ts'
 import { registerSearchTool, registerMemoryInjection } from './tool-search.ts'
+import { registerPersonaInjection } from './inject-persona.ts'
 import { registerMemoryCommand } from './distill.ts'
 import { MEMORY_MANIFEST } from './typert.ts'
 import { MemoryRuntime } from './runtime.ts'
@@ -42,6 +43,7 @@ export function apply(ctx: Context, config: Partial<MemoryConfig> = {}): void {
   registerRememberTool(ctx, cfg, store)
   registerSearchTool(ctx, cfg, store)
   registerMemoryInjection(ctx, cfg, store)
+  registerPersonaInjection(ctx, cfg, store)
   registerMemoryCommand(ctx, cfg, store, engine)
   // Host Remote for the settings page (strict Typert manifest).
   new MemoryRuntime(ctx, cfg, store)
